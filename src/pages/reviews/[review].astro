@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import type { Review } from '../../content/_config';
+
+export const getStaticPaths = async () => {
+  const reviewEntries = await getCollection('reviews');
+
+  return reviewEntries.map((entry) => ({
+    params: { review: entry.slug },
+    props: { review: entry },
+  }));
+};
+
+const { review } = Astro.props;
+const { Content } = await review.render();
+---
+
+<Layout
+  title={(review.data as Review).outlet}
+  description={`Review for ${(review.data as Review).outlet}'s Saizeriya outlet.'`}
+  url=""
+>
+  <main>
+    <Content />
+  </main>
+</Layout>

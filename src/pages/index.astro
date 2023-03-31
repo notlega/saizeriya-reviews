@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import type { Review } from '../content/_config';
+
+const reviewEntries = await getCollection('reviews');
+---
+
+<Layout
+  title="Saizeriya Reviews"
+  description="We review all the Saizeriya's in Singapore"
+  url=""
+>
+  <main>
+    <div>
+      <h1>Saizeriya Reviews</h1>
+      <p>A group of friends reviewing all the Saizeriya's in Singapore</p>
+      <h2>Ranking</h2>
+      <p>Ranking of all Saizeriya's that we have reviewed so far.</p>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Outlet</th>
+            <th scope="col">Region</th>
+            <th scope="col">Overall Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            reviewEntries.map((review, id) => {
+              return (
+                <tr>
+                  <th scope="row">{id + 1}</th>
+                  <td><a href={`/reviews/${review.slug}`}>{( review.data as Review ).outlet}</a></td>
+                  <td>{( review.data as Review ).region}</td>
+                  <td>{( review.data as Review ).overallScore}</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+</Layout>
